@@ -396,3 +396,74 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+-- Struktur dari tabel `pemasukan`
+CREATE TABLE `pemasukan` (
+  `id_pemasukan` int NOT NULL,
+  `id_pembayaran` int NOT NULL,
+  `nominal` decimal(15,2) NOT NULL,
+  `keterangan` text,
+  `tanggal_pemasukan` datetime NOT NULL,
+  `created_by` int NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id_pemasukan`),
+  KEY `id_pembayaran` (`id_pembayaran`),
+  KEY `created_by` (`created_by`),
+  CONSTRAINT `pemasukan_pembayaran_fk` FOREIGN KEY (`id_pembayaran`) REFERENCES `pembayaran_santri` (`id_pembayaran`) ON DELETE RESTRICT,
+  CONSTRAINT `pemasukan_user_fk` FOREIGN KEY (`created_by`) REFERENCES `user` (`id_user`) ON DELETE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Struktur dari tabel `pengeluaran`
+CREATE TABLE `pengeluaran` (
+  `id_pengeluaran` int NOT NULL,
+  `nama_pengeluaran` varchar(100) NOT NULL,
+  `nominal` decimal(15,2) NOT NULL,
+  `keterangan` text,
+  `tanggal_pengeluaran` datetime NOT NULL,
+  `bukti_pengeluaran` varchar(255) DEFAULT NULL,
+  `created_by` int NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id_pengeluaran`),
+  KEY `created_by` (`created_by`),
+  CONSTRAINT `pengeluaran_user_fk` FOREIGN KEY (`created_by`) REFERENCES `user` (`id_user`) ON DELETE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Struktur dari tabel `laporan_keuangan`
+CREATE TABLE `laporan_keuangan` (
+  `id_laporan` int NOT NULL,
+  `periode_awal` date NOT NULL,
+  `periode_akhir` date NOT NULL,
+  `total_pemasukan` decimal(15,2) NOT NULL DEFAULT '0.00',
+  `total_pengeluaran` decimal(15,2) NOT NULL DEFAULT '0.00',
+  `saldo_awal` decimal(15,2) NOT NULL DEFAULT '0.00',
+  `saldo_akhir` decimal(15,2) NOT NULL DEFAULT '0.00',
+  `keterangan` text,
+  `created_by` int NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id_laporan`),
+  KEY `created_by` (`created_by`),
+  CONSTRAINT `laporan_user_fk` FOREIGN KEY (`created_by`) REFERENCES `user` (`id_user`) ON DELETE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Trigger untuk auto insert ke tabel pemasukan saat pembayaran diterima
+DELIMITER //
+CREATE TRIGGER `tr_pembayaran_diterima` 
+AFTER UPDATE ON `pembayaran_santri`
+FOR EACH ROW
+BEGIN
+  IF NEW.status = 'diterima' AND OLD.status != 'diterima' THEN
+    INSERT INTO `pemasukan` (
+      id_pembayaran,
+      nominal,
+      keterangan,
+      tanggal_pemasukan,
+      created_by
+    ) VALUES (
+      NEW.id_pembayaran,
+      NEW.nominal_bayar,
+      CONCAT('Pembayaran dari santri untuk ', (SELECT nama_tagihan FROM tagihan WHERE id_tagihan = NEW.id_tagihan)),
+      NEW.tanggal_konfirmasi,
+      NEW.konfirmasi_by
+    );
+  END IF;
+END//
+DELIMITER ;

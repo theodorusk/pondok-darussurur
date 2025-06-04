@@ -91,6 +91,21 @@
                                         <span class="sub-item">Konfirmasi Pembayaran</span>
                                     </a>
                                 </li>
+                                <li class="<?php echo ($this->uri->segment(1) == 'pemasukan' && ($this->uri->segment(2) == '' || $this->uri->segment(2) == 'detail')) ? 'active' : ''; ?>">
+                                    <a href="<?php echo base_url('pemasukan'); ?>">
+                                        <span class="sub-item">Pemasukan</span>
+                                    </a>
+                                </li>
+                                <li class="<?php echo ($this->uri->segment(1) == 'pengeluaran' && ($this->uri->segment(2) == '' || $this->uri->segment(2) == 'detail')) ? 'active' : ''; ?>">
+                                    <a href="<?php echo base_url('pengeluaran'); ?>">
+                                        <span class="sub-item">Pengeluaran</span>
+                                    </a>
+                                </li>
+                                <li class="<?php echo ($this->uri->segment(1) == 'laporan' && ($this->uri->segment(2) == '' || $this->uri->segment(2) == 'detail')) ? 'active' : ''; ?>">
+                                    <a href="<?php echo base_url('laporan'); ?>">
+                                        <span class="sub-item">Laporan Keuangan</span>
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     </li>

@@ -84,17 +84,19 @@
                                                     </button>
                                                 </td>
                                                 <td>
-                                                    <a href="<?= base_url('rekening/edit/' . $item->id_rekening) ?>" 
-                                                        class="btn btn-sm btn-warning" data-toggle="tooltip" title="Edit">
-                                                        <i class="fa fa-edit"></i>
-                                                    </a>
-                                                    <button type="button" class="btn btn-sm btn-danger btn-confirm-delete" 
-                                                        data-url="<?= base_url('rekening/delete/' . $item->id_rekening) ?>"
-                                                        data-title="Hapus Rekening"
-                                                        data-text="Apakah Anda yakin ingin menghapus rekening ini? Tindakan ini tidak dapat dibatalkan."
-                                                        data-toggle="tooltip" title="Hapus">
-                                                        <i class="fa fa-trash"></i>
-                                                    </button>
+                                                    <div class="form-button-action">
+                                                        <a href="<?= base_url('rekening/edit/' . $item->id_rekening) ?>" 
+                                                            class="btn btn-link btn-primary btn-lg" data-bs-toggle="tooltip" title="Edit">
+                                                            <i class="fa fa-edit"></i>
+                                                        </a>
+                                                        <button type="button" class="btn btn-link btn-danger btn-lg btn-confirm-delete" 
+                                                            data-url="<?= base_url('rekening/delete/' . $item->id_rekening) ?>"
+                                                            data-title="Hapus Rekening"
+                                                            data-text="Apakah Anda yakin ingin menghapus rekening ini? Tindakan ini tidak dapat dibatalkan."
+                                                            data-bs-toggle="tooltip" title="Hapus">
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>

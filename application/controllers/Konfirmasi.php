@@ -1,4 +1,3 @@
-
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
@@ -77,30 +76,34 @@ class Konfirmasi extends CI_Controller
             redirect('konfirmasi');
         }
 
-        // Update status pembayaran
-        $pembayaranData = [
-            'status' => $status_baru,
-            'catatan_admin' => $catatan_admin,
-            'konfirmasi_by' => $this->session->userdata('id_user'),
-            'tanggal_konfirmasi' => date('Y-m-d H:i:s')
-        ];
-
+        // Mulai transaksi
         $this->db->trans_begin();
 
         try {
-            // Update pembayaran
-            $this->M_pembayaran->update($id_pembayaran, $pembayaranData);
-
-            // Catat log perubahan status
-            $logData = [
-                'id_pembayaran' => $id_pembayaran,
-                'status_lama' => $pembayaran->status,
-                'status_baru' => $status_baru,
-                'catatan' => $catatan_admin,
-                'created_by' => $this->session->userdata('id_user')
+            // Update status pembayaran
+            $pembayaranData = [
+                'status' => $status_baru,
+                'catatan_admin' => $catatan_admin,
+                'konfirmasi_by' => $this->session->userdata('id_user'),
+                'tanggal_konfirmasi' => date('Y-m-d H:i:s')
             ];
 
-            $this->M_log->insert($logData);
+            $this->M_pembayaran->update($id_pembayaran, $pembayaranData);
+
+            // Jika status diterima, catat ke pemasukan
+            if ($status_baru === 'diterima') {
+                $this->load->model('M_pemasukan');
+                
+                $pemasukanData = [
+                    'id_pembayaran' => $id_pembayaran,
+                    'nominal' => $pembayaran->nominal_bayar,
+                    'keterangan' => "Pembayaran {$pembayaran->nama_tagihan} dari santri {$pembayaran->nama_santri}",
+                    'tanggal_pemasukan' => date('Y-m-d H:i:s'),
+                    'created_by' => $this->session->userdata('id_user')
+                ];
+
+                $this->M_pemasukan->insert($pemasukanData);
+            }
 
             if ($this->db->trans_status() === FALSE) {
                 throw new Exception('Terjadi kesalahan saat mengkonfirmasi pembayaran');
@@ -108,6 +111,7 @@ class Konfirmasi extends CI_Controller
 
             $this->db->trans_commit();
             $this->session->set_flashdata('success', 'Pembayaran berhasil ' . ($status_baru === 'diterima' ? 'diterima' : 'ditolak'));
+
         } catch (Exception $e) {
             $this->db->trans_rollback();
             $this->session->set_flashdata('error', $e->getMessage());

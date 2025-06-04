@@ -104,19 +104,32 @@
                                                 </td>
                                                 <td><?= htmlspecialchars($item->nama_admin ?? '-', ENT_QUOTES, 'UTF-8') ?></td> <!-- PERBAIKAN DI SINI: konfirmasi_by_name -> nama_admin -->
                                                 <td>
-                                                    <a href="<?= base_url('Pembayaran/detail/' . $item->id_pembayaran) ?>" class="btn btn-sm btn-info" data-toggle="tooltip" title="Detail">
-                                                        <i class="fa fa-eye"></i> Detail
-                                                    </a>
-                                                    <?php if ($item->status === 'belum_bayar'): ?>
-                                                        <a href="<?= base_url('Pembayaran/detail/' . $item->id_pembayaran) ?>" class="btn btn-sm btn-primary" data-toggle="tooltip" title="Bayar">
-                                                            <i class="fa fa-upload"></i> Bayar
+                                                    <div class="form-button-action">
+                                                        <a href="<?= base_url('Pembayaran/detail/' . $item->id_pembayaran) ?>" 
+                                                           class="btn btn-link btn-info btn-lg" 
+                                                           data-bs-toggle="tooltip" 
+                                                           title="Detail">
+                                                            <i class="fa fa-eye"></i>
                                                         </a>
-                                                    <?php endif; ?>
-                                                    <?php if ($item->status === 'ditolak'): ?>
-                                                        <a href="<?= base_url('Pembayaran/detail/' . $item->id_pembayaran) ?>" class="btn btn-sm btn-primary" data-toggle="tooltip" title="Upload Ulang">
-                                                            <i class="fa fa-upload"></i> Upload Ulang
-                                                        </a>
-                                                    <?php endif; ?>
+                                                        
+                                                        <?php if ($item->status === 'belum_bayar'): ?>
+                                                            <a href="<?= base_url('Pembayaran/detail/' . $item->id_pembayaran) ?>" 
+                                                               class="btn btn-link btn-primary btn-lg" 
+                                                               data-bs-toggle="tooltip" 
+                                                               title="Bayar">
+                                                                <i class="fa fa-upload"></i>
+                                                            </a>
+                                                        <?php endif; ?>
+                                                        
+                                                        <?php if ($item->status === 'ditolak'): ?>
+                                                            <a href="<?= base_url('Pembayaran/detail/' . $item->id_pembayaran) ?>" 
+                                                               class="btn btn-link btn-primary btn-lg" 
+                                                               data-bs-toggle="tooltip" 
+                                                               title="Upload Ulang">
+                                                                <i class="fa fa-upload"></i>
+                                                            </a>
+                                                        <?php endif; ?>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>

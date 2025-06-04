@@ -1,4 +1,3 @@
-
 <div class="container">
     <div class="page-inner">
         <div class="page-header">
@@ -72,17 +71,19 @@
                                                 <td><?= htmlspecialchars($item->nama_kategori, ENT_QUOTES, 'UTF-8') ?></td>
                                                 <td><?= htmlspecialchars($item->deskripsi ?: '-', ENT_QUOTES, 'UTF-8') ?></td>
                                                 <td>
-                                                    <a href="<?= base_url('kategori/edit/' . $item->id_kategori) ?>" 
-                                                        class="btn btn-sm btn-warning" data-toggle="tooltip" title="Edit">
-                                                        <i class="fa fa-edit"></i>
-                                                    </a>
-                                                    <button type="button" class="btn btn-sm btn-danger btn-confirm-delete" 
-                                                        data-url="<?= base_url('kategori/delete/' . $item->id_kategori) ?>"
-                                                        data-title="Hapus Kategori Pembayaran"
-                                                        data-text="Apakah Anda yakin ingin menghapus kategori ini? Tindakan ini tidak dapat dibatalkan."
-                                                        data-toggle="tooltip" title="Hapus">
-                                                        <i class="fa fa-trash"></i>
-                                                    </button>
+                                                    <div class="form-button-action">
+                                                        <a href="<?= base_url('kategori/edit/' . $item->id_kategori) ?>" 
+                                                            class="btn btn-link btn-primary btn-lg" data-bs-toggle="tooltip" title="Edit">
+                                                            <i class="fa fa-edit"></i>
+                                                        </a>
+                                                        <button type="button" class="btn btn-link btn-danger btn-lg btn-confirm-delete" 
+                                                            data-url="<?= base_url('kategori/delete/' . $item->id_kategori) ?>"
+                                                            data-title="Hapus Kategori Pembayaran"
+                                                            data-text="Apakah Anda yakin ingin menghapus kategori ini? Tindakan ini tidak dapat dibatalkan."
+                                                            data-bs-toggle="tooltip" title="Hapus">
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>
