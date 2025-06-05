@@ -23,7 +23,8 @@ class Pemasukan extends CI_Controller
     {
         $data = [
             'title' => 'Data Pemasukan',
-            'pemasukan' => $this->M_pemasukan->get_all()
+            'pemasukan' => $this->M_pemasukan->get_all(),
+            'total_pemasukan' => $this->M_pemasukan->get_total()
         ];
 
         template('pemasukan/list', $data);

@@ -1,5 +1,7 @@
+
 <div class="container">
     <div class="page-inner">
+        
         <div class="page-header">
             <h4 class="page-title"><?= $title ?></h4>
             <ul class="breadcrumbs">
@@ -16,7 +18,28 @@
                 </li>
             </ul>
         </div>
-
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card card-stats card-success card-round">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-3">
+                                <div class="icon-big text-center">
+                                    <i class="fas fa-money-bill-wave text-success"></i>
+                                </div>
+                            </div>
+                            <div class="col-9 col-stats">
+                                <div class="numbers">
+                                    <p class="card-category">Total Pemasukan</p>
+                                    <h4 class="card-title">Rp <?= number_format($total_pemasukan, 0, ',', '.') ?></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>  
+        </div>
+        
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
@@ -50,7 +73,7 @@
                         </form>
                     </div>
                 </div>
-
+                
                 <div class="card">
                     <div class="card-body">
                         <div class="table-responsive">

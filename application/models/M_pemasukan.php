@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-
-class M_pemasukan extends CI_Model {
+class M_pemasukan extends CI_Model 
+{
     private $table = 'pemasukan';
 
     public function get_all() {
@@ -30,13 +30,24 @@ class M_pemasukan extends CI_Model {
             ->result();
     }
 
-    public function get_total_by_period($start_date, $end_date) {
-        return $this->db->select_sum('nominal')
-            ->where('DATE(tanggal_pemasukan) >=', $start_date)
-            ->where('DATE(tanggal_pemasukan) <=', $end_date)
-            ->get($this->table)
-            ->row()
-            ->nominal ?? 0;
+    public function get_total() {
+        $this->db->select_sum('nominal');
+        $query = $this->db->get('pemasukan');
+        $result = $query->row();
+        return $result ? $result->nominal : 0;
+    }
+
+    public function get_total_by_period($start_date = null, $end_date = null) {
+        $this->db->select_sum('nominal');
+        
+        if ($start_date && $end_date) {
+            $this->db->where('DATE(tanggal_pemasukan) >=', $start_date);
+            $this->db->where('DATE(tanggal_pemasukan) <=', $end_date);
+        }
+        
+        $query = $this->db->get('pemasukan');
+        $result = $query->row();
+        return $result ? $result->nominal : 0;
     }
 
     public function insert($data) {
