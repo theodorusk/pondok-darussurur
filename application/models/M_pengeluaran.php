@@ -38,11 +38,17 @@ class M_pengeluaran extends CI_Model {
             ->result();
     }
 
-    public function get_total() {
-        $result = $this->db->select_sum('nominal')
-            ->get($this->table)
-            ->row();
-        return $result->nominal ?? 0;
+    public function get_total() 
+    {
+        try {
+            $result = $this->db->select_sum('nominal')
+                              ->get($this->table)
+                              ->row();
+            return $result->nominal ?? 0;
+        } catch (Exception $e) {
+            log_message('error', $e->getMessage());
+            return 0;
+        }
     }
 
     public function get_total_by_period($start_date = null, $end_date = null) {

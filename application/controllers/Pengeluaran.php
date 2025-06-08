@@ -14,10 +14,12 @@ class Pengeluaran extends CI_Controller {
         $this->load->library(['form_validation', 'upload']);
     }
 
-    public function index() {
+    public function index() 
+    {
         $data = [
             'title' => 'Data Pengeluaran',
-            'pengeluaran' => $this->M_pengeluaran->get_all()
+            'pengeluaran' => $this->M_pengeluaran->get_all(),
+            'total_pengeluaran' => $this->M_pengeluaran->get_total() // Tambahkan ini
         ];
         template('pengeluaran/list', $data);
     }
