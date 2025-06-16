@@ -23,33 +23,7 @@
                     <div class="card-header">
                         <div class="d-flex justify-content-between align-items-center">
                             <h4 class="card-title">Daftar Pembayaran</h4>
-                            <!-- <a href="<?= base_url('Konfirmasi/laporan') ?>" class="btn btn-info btn-round">
-                                <i class="fa fa-file-alt me-2"></i>
-                                Laporan Pembayaran
-                            </a> -->
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <?php if ($this->session->flashdata('success')): ?>
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                                <?= $this->session->flashdata('success') ?>
-                            </div>
-                        <?php endif; ?>
-
-                        <?php if ($this->session->flashdata('error')): ?>
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                                <?= $this->session->flashdata('error') ?>
-                            </div>
-                        <?php endif; ?>
-
-                        <div class="col-md-12">
-                            <div class="btn-group gap-3" role="group" id="pills-tab">
+                            <div class="btn-group" role="group" id="pills-tab">
                                 <a href="#pills-pending" class="btn btn-outline-warning btn-round filter-konfirmasi active" data-toggle="pill" role="tab" aria-controls="pills-pending" aria-selected="true">
                                     <i class="fa fa-clock me-2"></i>
                                     Menunggu Konfirmasi
@@ -73,6 +47,25 @@
                                 </a>
                             </div>
                         </div>
+                    </div>
+                    <div class="card-body">
+                        <?php if ($this->session->flashdata('success')): ?>
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <?= $this->session->flashdata('success') ?>
+                            </div>
+                        <?php endif; ?>
+
+                        <?php if ($this->session->flashdata('error')): ?>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <?= $this->session->flashdata('error') ?>
+                            </div>
+                        <?php endif; ?>
 
                         <div class="tab-content" id="pills-tabContent">
                             <!-- Menunggu Konfirmasi Tab -->

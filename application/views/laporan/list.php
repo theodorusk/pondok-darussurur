@@ -1,4 +1,3 @@
-
 <div class="container">
     <div class="page-inner">
         <div class="page-header">
@@ -90,8 +89,7 @@
                                                    class="btn btn-link btn-info btn-lg" data-bs-toggle="tooltip" title="Detail">
                                                     <i class="fa fa-eye"></i>
                                                 </a>
-                                                <a href="<?= base_url('laporan/print/' . $row->id_laporan) ?>" 
-                                                   class="btn btn-link btn-primary btn-lg" data-bs-toggle="tooltip" title="Print">
+                                                <a href="<?= base_url('laporan/print/' . $row->id_laporan) ?>" class="btn btn-link btn-primary btn-lg" data-bs-toggle="tooltip" title="Cetak">
                                                     <i class="fa fa-print"></i>
                                                 </a>
                                                 <button type="button" data-bs-toggle="tooltip" title="Hapus" class="btn btn-link btn-danger btn-lg btn-confirm-delete"

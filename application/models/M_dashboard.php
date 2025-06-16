@@ -1,4 +1,3 @@
-
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
@@ -6,9 +5,9 @@ class M_dashboard extends CI_Model
 {
     public function count_santri()
     {
-        return $this->db
-            ->from('santri')
-            ->count_all_results();
+        return $this->db->where('id_role', 2) // ID role 2 untuk santri
+                        ->from('user')
+                        ->count_all_results();
     }
 
     public function count_tagihan_aktif()
@@ -22,25 +21,23 @@ class M_dashboard extends CI_Model
 
     public function count_pembayaran_by_status($status)
     {
-        return $this->db
-            ->where('status', $status)
-            ->from('pembayaran_santri')
-            ->count_all_results();
+        return $this->db->where('status', $status)
+                        ->from('pembayaran_santri')
+                        ->count_all_results();
     }
 
     public function get_recent_payments($limit = 5)
     {
-        return $this->db
-            ->select('pembayaran_santri.*, tagihan.nama_tagihan, santri.nis, user.nama_user')
-            ->from('pembayaran_santri')
-            ->join('tagihan', 'tagihan.id_tagihan = pembayaran_santri.id_tagihan')
-            ->join('santri', 'santri.id_santri = pembayaran_santri.id_santri')
-            ->join('user', 'user.id_user = santri.id_user')
-            ->where('pembayaran_santri.status', 'menunggu_konfirmasi')
-            ->order_by('pembayaran_santri.tanggal_bayar', 'DESC')
-            ->limit($limit)
-            ->get()
-            ->result();
+        return $this->db->select('ps.*, t.nama_tagihan, u.nama_user')
+                        ->from('pembayaran_santri ps')
+                        ->join('tagihan t', 't.id_tagihan = ps.id_tagihan', 'left')
+                        ->join('santri s', 's.id_santri = ps.id_santri', 'left')
+                        ->join('user u', 'u.id_user = s.id_user', 'left')
+                        ->where_in('ps.status', ['diterima', 'menunggu_konfirmasi', 'ditolak'])
+                        ->order_by('ps.tanggal_bayar', 'DESC')
+                        ->limit($limit)
+                        ->get()
+                        ->result();
     }
 
     public function get_monthly_payments($year = null)

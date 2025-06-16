@@ -12,6 +12,8 @@ class Laporan extends CI_Controller
         }
         // Load model
         $this->load->model('M_laporan');
+        // Load helper fungsi
+        $this->load->helper('fungsi');
     }
 
     public function index()
@@ -110,5 +112,33 @@ class Laporan extends CI_Controller
         $this->output
             ->set_content_type('application/json')
             ->set_output(json_encode($response));
+    }
+
+    public function print($id_laporan)
+    {
+        // Ambil data
+        $laporan = $this->M_laporan->get_by_id($id_laporan);
+        $pemasukan = $this->M_laporan->get_pemasukan_detail($id_laporan);
+        $pengeluaran = $this->M_laporan->get_pengeluaran_detail($id_laporan);
+        
+        if (!$laporan) {
+            show_404();
+        }
+        
+        // Load view untuk konten PDF
+        $html = $this->load->view('laporan/print_pdf', [
+            'laporan' => $laporan,
+            'pemasukan' => $pemasukan,
+            'pengeluaran' => $pengeluaran
+        ], true);
+        
+        // Generate nama file PDF
+        $filename = 'Laporan_Keuangan_' . sprintf('%03d', $laporan->id_laporan);
+        
+        // Load library PDF (jika tidak di-autoload)
+        $this->load->library('pdf');
+        
+        // Generate PDF menggunakan library
+        $this->pdf->generate($html, $filename, 'A4', 'portrait');
     }
 }

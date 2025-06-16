@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jun 07, 2025 at 01:52 PM
+-- Generation Time: Jun 16, 2025 at 08:15 AM
 -- Server version: 8.0.30
 -- PHP Version: 7.4.15
 
@@ -60,6 +60,18 @@ CREATE TABLE `laporan_keuangan` (
   `created_by` int NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `laporan_keuangan`
+--
+
+INSERT INTO `laporan_keuangan` (`id_laporan`, `periode_awal`, `periode_akhir`, `total_pemasukan`, `total_pengeluaran`, `saldo_awal`, `saldo_akhir`, `keterangan`, `created_by`, `created_at`) VALUES
+(4, '2025-06-01', '2025-06-30', '2010200000.00', '650000.00', '0.00', '2009550000.00', '1 - 30 juni', 39, '2025-06-07 07:22:43'),
+(5, '2025-05-01', '2025-06-30', '2010200000.00', '650000.00', '0.00', '2009550000.00', 'bayar kas', 39, '2025-06-07 07:25:20'),
+(6, '2025-06-07', '2025-06-07', '1000000.00', '1150000.00', '0.00', '-150000.00', 'pemasukan', 39, '2025-06-07 07:32:20'),
+(7, '2025-04-01', '2025-06-30', '2011200000.00', '1150000.00', '0.00', '2010050000.00', 'rakap', 39, '2025-06-07 07:40:20'),
+(8, '2025-06-07', '2025-06-07', '1000000.00', '1150000.00', '0.00', '-150000.00', 'h', 39, '2025-06-07 08:10:38'),
+(10, '2025-06-01', '2025-06-16', '2011200000.00', '1150000.00', '0.00', '2010050000.00', 'jjj', 39, '2025-06-15 21:58:14');
 
 -- --------------------------------------------------------
 
@@ -123,7 +135,8 @@ INSERT INTO `pemasukan` (`id_pemasukan`, `id_pembayaran`, `nominal`, `keterangan
 (4, 9, '50000.00', 'Pembayaran Listrik dari santri Abdul Rozaq', '2025-06-05 17:08:00', 39, '2025-06-05 17:08:00'),
 (5, 14, '1000000000.00', 'Pembayaran jjjjjjjjjj dari santri Abdul Rozaq', '2025-06-05 17:08:06', 39, '2025-06-05 17:08:06'),
 (6, 19, '100000.00', 'Pembayaran Nigga dari santri Abdul Rozaq', '2025-06-05 17:08:13', 39, '2025-06-05 17:08:13'),
-(7, 4, '5000000.00', 'Pembayaran SPP bulan juli dari santri Abdul Rozaq', '2025-06-05 17:08:18', 39, '2025-06-05 17:08:18');
+(7, 4, '5000000.00', 'Pembayaran SPP bulan juli dari santri Abdul Rozaq', '2025-06-05 17:08:18', 39, '2025-06-05 17:08:18'),
+(8, 37, '1000000.00', 'Pembayaran hiy dari santri Risky Fadilah Gunawan', '2025-06-07 14:31:23', 39, '2025-06-07 14:31:23');
 
 -- --------------------------------------------------------
 
@@ -162,7 +175,10 @@ INSERT INTO `pembayaran_santri` (`id_pembayaran`, `id_tagihan`, `id_santri`, `st
 (14, 3, 7, 'diterima', '1000000000.00', '2025-06-05 17:03:26', '975f9b8cea92a056536a4bd67b6cfc04.jpg', '', '', 39, '2025-06-05 17:08:06', '2025-06-02 21:59:19'),
 (17, 4, 5, 'diterima', '100000.00', '2025-06-04 15:12:46', 'eaa95cc06cf9d29867522295a820a647.jpg', '', '', 39, '2025-06-04 15:13:23', '2025-06-03 06:30:42'),
 (18, 4, 6, 'diterima', '100000.00', '2025-06-03 13:34:14', '5f8358a8de209d195f8d5216fb32e67e.jpg', 'haha', 'mantap', 39, '2025-06-03 13:36:11', '2025-06-03 06:30:42'),
-(19, 4, 7, 'diterima', '100000.00', '2025-06-05 17:03:16', '2795126aa7360e0a150d8698d37966eb.jpg', '', '', 39, '2025-06-05 17:08:13', '2025-06-03 06:30:42');
+(19, 4, 7, 'diterima', '100000.00', '2025-06-05 17:03:16', '2795126aa7360e0a150d8698d37966eb.jpg', '', '', 39, '2025-06-05 17:08:13', '2025-06-03 06:30:42'),
+(36, 8, 5, 'menunggu_konfirmasi', '1000000.00', '2025-06-11 03:37:59', '850f34a1d026685cc1b2869b40e905c5.jpg', '', NULL, NULL, NULL, '2025-06-07 07:30:19'),
+(37, 8, 6, 'diterima', '1000000.00', '2025-06-07 14:31:00', '408913fff93f9023cef137633285a78b.jpg', '', '', 39, '2025-06-07 14:31:23', '2025-06-07 07:30:19'),
+(38, 8, 7, 'belum_bayar', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-06-07 07:30:19');
 
 -- --------------------------------------------------------
 
@@ -186,7 +202,8 @@ CREATE TABLE `pengeluaran` (
 --
 
 INSERT INTO `pengeluaran` (`id_pengeluaran`, `nama_pengeluaran`, `nominal`, `keterangan`, `tanggal_pengeluaran`, `bukti_pengeluaran`, `created_by`, `created_at`) VALUES
-(4, 'makn', '650000.00', 'jugt', '2025-06-07 12:40:34', '7b5c492bbe5da0f5d1b55ae7a780bf19.jpg', 39, '2025-06-07 12:40:01');
+(4, 'makn', '650000.00', 'jugt', '2025-06-07 12:40:34', '7b5c492bbe5da0f5d1b55ae7a780bf19.jpg', 39, '2025-06-07 12:40:01'),
+(5, 'hyu', '500000.00', 'hehe', '2025-06-07 14:31:53', 'ddd905c3a8d490345a6d80b8b376f215.jpg', 39, '2025-06-07 14:31:53');
 
 -- --------------------------------------------------------
 
@@ -281,7 +298,8 @@ INSERT INTO `tagihan` (`id_tagihan`, `id_kategori`, `nama_tagihan`, `deskripsi`,
 (1, 1, 'SPP bulan juli', 'JJJJ', '5000000.00', '2025-06-01', '2025-07-02', 2, 39, '2025-06-01 11:52:27'),
 (2, 3, 'Listrik', 'jjjjjjjjjjjjjjjjjjj', '50000.00', '2025-06-03', '2025-07-03', 1, 39, '2025-06-03 00:49:56'),
 (3, 3, 'jjjjjjjjjj', 'jjjjjjjj', '1000000000.00', '2025-06-03', '2025-07-03', 2, 39, '2025-06-03 04:59:19'),
-(4, 1, 'Nigga', 'bayar', '100000.00', '2025-06-03', '2025-07-10', 2, 39, '2025-06-03 13:30:42');
+(4, 1, 'Nigga', 'bayar', '100000.00', '2025-06-03', '2025-07-10', 2, 39, '2025-06-03 13:30:42'),
+(8, 3, 'hiy', 'hy', '1000000.00', '2025-06-07', '2025-07-31', 2, 39, '2025-06-07 14:30:19');
 
 -- --------------------------------------------------------
 
@@ -308,8 +326,9 @@ INSERT INTO `user` (`id_user`, `nama_user`, `email`, `password`, `id_role`, `nik
 (9, 'Mei Albert', '213100205@almaata.ac.id', '$2y$10$45okUXQpFBOURq6jCBE7eOvZilZZwkb6dmAJN1s8RZFSuKrx3Aah6', 1, '', 'L', 'bcd11dad5db3f04944ff674015c81bc8.jpg'),
 (39, 'Theodorus keraf', 'theo@gmail.com', '$2y$10$YIbMkKapHAi3QcsFirkcqe9M8nDrT88n/AMoLafLsjTWhk9EZoH42', 1, NULL, 'L', 'b2aa491fc9c588c8827f8da5ee1dbc36.png'),
 (40, 'Maulana', 'maulana@gmail.com', '$2y$10$eQiaska9k3/EGUOnQ8kQb.q1FHbs8ZPProqrdtTH2JeLMNBAu59l6', 2, NULL, 'L', 'a0590a61a373223953eecee563a13422.jpg'),
-(41, 'Risky Fadilah Gunawan', 'fadill@gmail.com', '$2y$10$wzabFzzH8r00R75TXsj2kO8uRr8BPscLLVP/imU3Ep.YhxNUtLAVu', 2, NULL, 'P', 'd8082c7f873b7a534fd2b576c263864a.png'),
-(42, 'Abdul Rozaq', 'abdul@gmail.com', '$2y$10$JdkcbWs8V/5BMEz/qZnMsut5Jt1BPzhGDEjLzEFj9XW5EQCD1fy12', 2, NULL, 'L', NULL);
+(41, 'Risky Fadilah Gunawan', 'fadill@gmail.com', '$2y$10$wzabFzzH8r00R75TXsj2kO8uRr8BPscLLVP/imU3Ep.YhxNUtLAVu', 2, NULL, 'P', '3295ecf094e0bff4aa53bb8fe98c0925.jpg'),
+(42, 'Abdul Rozaq', 'abdul@gmail.com', '$2y$10$JdkcbWs8V/5BMEz/qZnMsut5Jt1BPzhGDEjLzEFj9XW5EQCD1fy12', 2, NULL, 'L', NULL),
+(44, 'Admin1', 'admin1@gmail.com', '$2y$10$RcIqJQFvapHKOsIKByueoeM25bwcBQv615RiNpJQWT8DmX0nK3eiG', 1, NULL, 'L', NULL);
 
 --
 -- Indexes for dumped tables
@@ -406,6 +425,12 @@ ALTER TABLE `kategori_pembayaran`
   MODIFY `id_kategori` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
+-- AUTO_INCREMENT for table `laporan_keuangan`
+--
+ALTER TABLE `laporan_keuangan`
+  MODIFY `id_laporan` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
 -- AUTO_INCREMENT for table `log_pembayaran`
 --
 ALTER TABLE `log_pembayaran`
@@ -415,19 +440,19 @@ ALTER TABLE `log_pembayaran`
 -- AUTO_INCREMENT for table `pemasukan`
 --
 ALTER TABLE `pemasukan`
-  MODIFY `id_pemasukan` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_pemasukan` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `pembayaran_santri`
 --
 ALTER TABLE `pembayaran_santri`
-  MODIFY `id_pembayaran` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id_pembayaran` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT for table `pengeluaran`
 --
 ALTER TABLE `pengeluaran`
-  MODIFY `id_pengeluaran` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_pengeluaran` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `rekening`
@@ -451,13 +476,13 @@ ALTER TABLE `santri`
 -- AUTO_INCREMENT for table `tagihan`
 --
 ALTER TABLE `tagihan`
-  MODIFY `id_tagihan` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_tagihan` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id_user` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `id_user` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- Constraints for dumped tables

@@ -140,6 +140,36 @@
                             <p>Kelola Pengguna</p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="javascript:void(0)" id="btn-logout-sidebar">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <p>Keluar</p>
+                        </a>
+                    </li>
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            var btnLogoutSidebar = document.getElementById('btn-logout-sidebar');
+                            if (btnLogoutSidebar) {
+                                btnLogoutSidebar.addEventListener('click', function(e) {
+                                    e.preventDefault();
+                                    Swal.fire({
+                                        title: 'Konfirmasi Keluar',
+                                        text: "Apakah Anda yakin ingin keluar dari sistem?",
+                                        icon: 'question',
+                                        showCancelButton: true,
+                                        confirmButtonColor: '#3085d6',
+                                        cancelButtonColor: '#d33',
+                                        confirmButtonText: 'Ya, Keluar!',
+                                        cancelButtonText: 'Batal'
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            window.location.href = "<?php echo base_url('auth/logout'); ?>";
+                                        }
+                                    });
+                                });
+                            }
+                        });
+                    </script>
                 <?php endif; ?>
 
                 <?php if ($this->session->userdata('id_role') == 2): // Santri 
@@ -153,9 +183,39 @@
                     <li class="nav-item <?php echo ($this->uri->segment(1) == 'Pembayaran') ? 'active' : ''; ?>">
                         <a href="<?php echo base_url('Pembayaran'); ?>">
                             <i class="fas fa-money-check-alt"></i>
-                            <p>Pembayaran Tagihan</p>
+                            <p>Informasi Pembayaran</p>
                         </a>
                     </li>
+                      <li class="nav-item">
+                        <a href="javascript:void(0)" id="btn-logout-sidebar">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <p>Keluar</p>
+                        </a>
+                    </li>
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            var btnLogoutSidebar = document.getElementById('btn-logout-sidebar');
+                            if (btnLogoutSidebar) {
+                                btnLogoutSidebar.addEventListener('click', function(e) {
+                                    e.preventDefault();
+                                    Swal.fire({
+                                        title: 'Konfirmasi Keluar',
+                                        text: "Apakah Anda yakin ingin keluar dari sistem?",
+                                        icon: 'question',
+                                        showCancelButton: true,
+                                        confirmButtonColor: '#3085d6',
+                                        cancelButtonColor: '#d33',
+                                        confirmButtonText: 'Ya, Keluar!',
+                                        cancelButtonText: 'Batal'
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            window.location.href = "<?php echo base_url('auth/logout'); ?>";
+                                        }
+                                    });
+                                });
+                            }
+                        });
+                    </script>
                     <!-- Menu Riwayat Pembayaran dihapus karena sudah digabung -->
                 <?php endif; ?>
         </div>
