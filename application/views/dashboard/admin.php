@@ -5,8 +5,8 @@
         <div class="page-inner p-4">
             <div class="d-flex flex-column flex-md-row align-items-center justify-content-between">
                 <div class="mb-3 mb-md-0">
-                    <h2 class="fw-bold text-white mb-1">Dashboard Admin</h2>
-                    <p class="text-white opacity-80 mb-0">Manajemen Keuangan Pondok Pesantren Darussurur</p>
+                    <h2 class="fw-bold text-white mb-12">Dashboard Admin</h2>
+                    <p class="text-white opacity-80 mb-0">Selamat datang, <?= $nama_user ?></p>
                 </div>
                 <div class="d-flex gap-2">
                     <a href="<?= base_url('laporan') ?>" class="btn btn-light btn-round d-flex align-items-center">

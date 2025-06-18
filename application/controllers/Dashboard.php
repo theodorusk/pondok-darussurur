@@ -98,10 +98,43 @@ class Dashboard extends CI_Controller {
         if ($this->session->userdata('id_role') != 2) {
             redirect('auth/forbidden');
         }
-
-        $data['title'] = 'Dashboard Santri';
-        $data['nama_user'] = $this->session->userdata('nama_user');
-
+        
+        // Get santri ID based on logged in user
+        $id_user = $this->session->userdata('id_user');
+        $this->load->model('M_santri');
+        $santri = $this->M_santri->get_by_user($id_user);
+        
+        if (!$santri) {
+            $this->session->set_flashdata('error', 'Data santri tidak ditemukan.');
+            redirect('auth/logout');
+        }
+        
+        $id_santri = $santri->id_santri;
+        
+        // Load required models
+        $this->load->model(['M_dashboard', 'M_pembayaran', 'M_tagihan']);
+        
+        // Get payment summary
+        $summary = $this->M_dashboard->get_santri_payment_summary($id_santri);
+        
+        // Prepare data to pass to the view
+        $data = [
+            'title' => 'Dashboard Santri',
+            'nama_user' => $this->session->userdata('nama_user'),
+            'total_tagihan' => $summary->total_tagihan ?? 0,
+            'diterima' => $summary->diterima ?? 0,
+            'menunggu_konfirmasi' => $summary->menunggu_konfirmasi ?? 0,
+            'belum_bayar' => $summary->belum_bayar ?? 0,
+            'ditolak' => $summary->ditolak ?? 0,
+            'tagihan_akan_datang' => $summary->tagihan_akan_datang ?? [],
+            'riwayat_pembayaran' => $this->M_pembayaran->get_all_riwayat_by_santri($id_santri)
+        ];
+        
+        // If we need to limit the payment history, we can do it here
+        if (count($data['riwayat_pembayaran']) > 5) {
+            $data['riwayat_pembayaran'] = array_slice($data['riwayat_pembayaran'], 0, 5);
+        }
+        
         template('dashboard/santri', $data);
     }
     

@@ -25,7 +25,7 @@
 				<nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg" data-background-color="light-blue2">
 
 					<div class="container-fluid">
-						<nav class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
+						<!-- <nav class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
 							<div class="input-group">
 								<div class="input-group-prepend">
 									<button type="submit" class="btn btn-search pe-1">
@@ -34,10 +34,11 @@
 								</div>
 								<input type="text" placeholder="Search ..." class="form-control">
 							</div>
-						</nav>
+						</nav> -->
 
 						<ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
-							<li class="nav-item topbar-icon dropdown hidden-caret d-flex d-lg-none">
+							<!-- search -->
+							<!-- <li class="nav-item topbar-icon dropdown hidden-caret d-flex d-lg-none">
 								<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false" aria-haspopup="true">
 									<i class="fa fa-search"></i>
 								</a>
@@ -48,8 +49,10 @@
 										</div>
 									</form>
 								</ul>
-							</li>
-							<li class="nav-item topbar-icon dropdown hidden-caret">
+							</li> -->
+
+							<!-- mesaage -->
+							<!-- <li class="nav-item topbar-icon dropdown hidden-caret">
 								<a class="nav-link dropdown-toggle" href="#" id="messageDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 									<i class="fa fa-envelope"></i>
 								</a>
@@ -118,8 +121,9 @@
 										<a class="see-all" href="javascript:void(0);">See all messages<i class="fa fa-angle-right"></i> </a>
 									</li>
 								</ul>
-							</li>
-							<li class="nav-item topbar-icon dropdown hidden-caret">
+							</li> -->
+	                         <!-- notifikasi -->
+							<!-- <li class="nav-item topbar-icon dropdown hidden-caret">
 								<a class="nav-link dropdown-toggle" href="#" id="notifDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 									<i class="fa fa-bell"></i>
 									<span class="notification">4</span>
@@ -176,8 +180,10 @@
 										<a class="see-all" href="javascript:void(0);">See all notifications<i class="fa fa-angle-right"></i> </a>
 									</li>
 								</ul>
-							</li>
-							<li class="nav-item topbar-icon dropdown hidden-caret">
+							</li> -->
+
+							<!-- layer -->
+							<!-- <li class="nav-item topbar-icon dropdown hidden-caret">
 								<a class="nav-link" data-bs-toggle="dropdown" href="#" aria-expanded="false">
 									<i class="fas fa-layer-group"></i>
 								</a>
@@ -241,7 +247,7 @@
 										</div>
 									</div>
 								</div>
-							</li>
+							</li> -->
 						</ul>
 					</div>
 				</nav>

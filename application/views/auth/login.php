@@ -122,7 +122,7 @@
     <div class="container px-3">
         <div class="login-card mx-auto">
             <div class="login-header">
-                <img src="<?= base_url('assets/img/logo/logo.png') ?>" alt="Logo Pesantren" class="img-fluid" style="height: 150px;">
+                <img src="<?= base_url('assets/img/logo/logo99.png') ?>" alt="Logo Pesantren" class="img-fluid" style="height: 150px;">
                 <h1 class="login-title">Sistem Informasi Keuangan</h1>
                 <p class="login-subtitle">Pondok Pesantren Darussurur</p>
             </div>

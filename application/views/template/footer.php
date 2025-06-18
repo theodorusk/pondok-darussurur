@@ -329,6 +329,23 @@
                     ]
                 });
             }
+            if ($('#pemasukan-table').length && typeof initializeDataTable === 'function') {
+                initializeDataTable('#pemasukan-table', {
+                    order: [
+                        [5, 'desc']
+                    ], // Urutkan berdasarkan Tanggal (kolom ke-6)
+                    columnDefs: [
+                        {
+                            orderable: false,
+                            targets: [0]
+                        }, // Kolom No tidak bisa diurutkan
+                        {
+                            searchable: false,
+                            targets: [0]
+                        } // Kolom No tidak bisa dicari
+                    ]
+                });
+            }
 
             if ($('#santriTable').length && typeof initializeDataTable === 'function') {
                 initializeDataTable('#santriTable', {

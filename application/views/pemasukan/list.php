@@ -41,39 +41,6 @@
         </div>
         
         <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="d-flex align-items-center">
-                            <h4 class="card-title">Filter Data</h4>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <form id="formFilter" class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>Tanggal Awal</label>
-                                    <input type="date" class="form-control" id="start_date" name="start_date">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>Tanggal Akhir</label>
-                                    <input type="date" class="form-control" id="end_date" name="end_date">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>&nbsp;</label>
-                                    <button type="submit" class="btn btn-primary btn-block">
-                                        <i class="fa fa-filter mr-2"></i> Filter
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                
                 <div class="card">
                     <div class="card-body">
                         <div class="table-responsive">
@@ -114,12 +81,22 @@
 <script>
 $(document).ready(function() {
     // Initialize DataTable
-    const table = $('#pemasukan-table').DataTable({
-        responsive: true,
-        language: {
-            url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/id.json"
-        }
-    });
+    // const table = $('#pemasukan-table').DataTable({
+    //     responsive: true,
+    //     language: {
+    //         url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/id.json"
+    //     },
+    //     // Define columns explicitly to avoid the unknown parameter error
+    //     columns: [
+    //         { title: "No" },
+    //         { title: "NIS" },
+    //         { title: "Nama Santri" },
+    //         { title: "Tagihan" },
+    //         { title: "Nominal" },
+    //         { title: "Tanggal" },
+    //         { title: "Admin" }
+    //     ]
+    // });
 
     // Handle filter form
     $('#formFilter').on('submit', function(e) {
@@ -132,22 +109,44 @@ $(document).ready(function() {
             dataType: 'json',
             success: function(response) {
                 if (response.status) {
-                    table.clear().draw();
-                    response.data.forEach((item, index) => {
+                    // Clear the table first
+                    table.clear();
+                    
+                    // Add each row from the response data
+                    let counter = 1;
+                    $.each(response.data, function(index, item) {
+                        // Format the data
+                        const formattedDate = formatDate(item.tanggal_pemasukan);
+                        const formattedNominal = 'Rp ' + formatNumber(item.nominal);
+                        
+                        // Add the row
                         table.row.add([
-                            index + 1,
+                            counter++,
                             item.nis,
                             item.nama_santri,
                             item.nama_tagihan,
-                            `Rp ${formatNumber(item.nominal)}`,
-                            formatDate(item.tanggal_pemasukan),
+                            formattedNominal,
+                            formattedDate,
                             item.nama_admin
-                        ]).draw(false);
+                        ]);
                     });
+                    
+                    // Draw the table to show the updated data
+                    table.draw();
+                    
+                    // Update total pemasukan if available
+                    if (response.total_pemasukan !== undefined) {
+                        $('.card-title:contains("Total Pemasukan")').text('Rp ' + formatNumber(response.total_pemasukan));
+                    }
+                } else {
+                    // Handle no data response
+                    table.clear().draw();
+                    alert('Tidak ada data yang sesuai dengan filter');
                 }
             },
             error: function(xhr, status, error) {
                 console.error('Error:', error);
+                alert('Terjadi kesalahan saat memproses permintaan');
             }
         });
     });
@@ -157,13 +156,18 @@ function formatNumber(number) {
     return new Intl.NumberFormat('id-ID').format(number);
 }
 
-function formatDate(date) {
-    return new Date(date).toLocaleDateString('id-ID', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-    });
+function formatDate(dateString) {
+    if (!dateString) return '-';
+    
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return dateString; // Return original if invalid
+    
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    
+    return `${day}/${month}/${year} ${hours}:${minutes}`;
 }
 </script>
