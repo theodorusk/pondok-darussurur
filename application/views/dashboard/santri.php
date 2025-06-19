@@ -4,12 +4,12 @@
         <div class="page-inner p-4">
             <div class="d-flex flex-column flex-md-row align-items-center justify-content-between">
                 <div class="mb-3 mb-md-0">
-                    <h2 class="fw-bold text-white mb-12">Dashboard Santri</h2>
+                    <h2 class="fw-bold text-white mb-1">Dashboard Santri</h2>
                     <p class="text-white opacity-80 mb-0">Selamat datang, <?= $nama_user ?></p>
                 </div>
-                <div class="ms-md-auto mt-3 mt-md-4">
-                    <a href="<?= base_url('pembayaran') ?>" class="btn btn-light btn-round d-flex align-items-center justify-content-center ms-md-4 mt-2 mt-md-0">
-                        Lihat Tagihan <i class="fas fa-money-check-alt ms-2"></i>
+                <div class="d-flex gap-2">
+                    <a href="<?= base_url('pembayaran') ?>" class="btn btn-light btn-round d-flex align-items-center">
+                        <i class="fas fa-money-check-alt me-2"></i>Lihat Tagihan
                     </a>
                 </div>
             </div>
@@ -28,7 +28,7 @@
                         </div>
                         <div>
                             <p class="card-category mb-1 text-muted small fw-semibold">Total Tagihan</p>
-                            <h4 class="card-title fw-bold mb-0"><?= $total_tagihan ?></h4>
+                            <h4 class="card-title fw-bold mb-0"><?= $total_tagihan ?? 0 ?></h4>
                         </div>
                     </div>
                 </div>
@@ -41,7 +41,7 @@
                         </div>
                         <div>
                             <p class="card-category mb-1 text-muted small fw-semibold">Diterima</p>
-                            <h4 class="card-title fw-bold mb-0"><?= $diterima ?></h4>
+                            <h4 class="card-title fw-bold mb-0"><?= $diterima ?? 0 ?></h4>
                         </div>
                     </div>
                 </div>
@@ -54,7 +54,7 @@
                         </div>
                         <div>
                             <p class="card-category mb-1 text-muted small fw-semibold">Menunggu Konfirmasi</p>
-                            <h4 class="card-title fw-bold mb-0"><?= $menunggu_konfirmasi ?></h4>
+                            <h4 class="card-title fw-bold mb-0"><?= $menunggu_konfirmasi ?? 0 ?></h4>
                         </div>
                     </div>
                 </div>
@@ -67,7 +67,7 @@
                         </div>
                         <div>
                             <p class="card-category mb-1 text-muted small fw-semibold">Belum Dibayar</p>
-                            <h4 class="card-title fw-bold mb-0"><?= $belum_bayar ?></h4>
+                            <h4 class="card-title fw-bold mb-0"><?= $belum_bayar ?? 0 ?></h4>
                         </div>
                     </div>
                 </div>
@@ -86,27 +86,7 @@
                         <!-- Legend -->
                         <div class="mb-3">
                             <!-- First row of legends -->
-                            <!-- <div class="d-flex mb-2">
-                                <div class="d-flex align-items-center me-4">
-                                    <div style="width: 20px; height: 20px; background-color: #31ce36;"></div>
-                                    <span class="ms-2">Diterima</span>
-                                </div>
-                                <div class="d-flex align-items-center me-4">
-                                    <div style="width: 20px; height: 20px; background-color: #ffad46;"></div>
-                                    <span class="ms-2">Menunggu Konfirmasi</span>
-                                </div>
-                            </div>
-                            <!-- Second row of legends -->
-                            <div class="d-flex">
-                                <!-- <div class="d-flex align-items-center me-4">
-                                    <div style="width: 20px; height: 20px; background-color: #6c757d;"></div>
-                                    <span class="ms-2">Belum Dibayar</span>
-                                </div>
-                                <div class="d-flex align-items-center me-4">
-                                    <div style="width: 20px; height: 20px; background-color: #f25961;"></div>
-                                    <span class="ms-2">Ditolak</span>
-                                </div> -->
-                            </div> 
+                            
                         </div>
                         
                         <div style="position: relative; height: 250px;">
@@ -223,7 +203,7 @@
                         </div>
                     </div>
                     <div class="card-footer text-center py-3">
-                        <a href="<?= base_url('pembayaran') ?>" class="btn btn-sm btn-primary btn-round px-3">
+                        <a href="<?= base_url('pembayaran/riwayat') ?>" class="btn btn-sm btn-primary btn-round px-3">
                             <i class="fas fa-history me-1"></i> Lihat Semua Riwayat
                         </a>
                     </div>
@@ -285,90 +265,106 @@ body {
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Ensure Chart.js is loaded
-    if (typeof Chart === 'undefined') {
-        // Create script element to load Chart.js
+    // Load Chart.js - ensures it's available
+    if (!window.Chart) {
         var script = document.createElement('script');
-        script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
-        script.onload = initChart;
+        script.src = '<?= base_url('assets/js/plugin/chart.js/chart.min.js') ?>';
+        script.onload = function() {
+            initializeChart();
+        };
+        script.onerror = function() {
+            // Fallback to CDN if local file fails
+            var cdnScript = document.createElement('script');
+            cdnScript.src = 'https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js';
+            cdnScript.onload = function() {
+                initializeChart();
+            };
+            cdnScript.onerror = function() {
+                console.error('Failed to load Chart.js');
+                document.getElementById('paymentStatusChart').parentElement.innerHTML = 
+                    '<div class="alert alert-warning">Failed to load chart library. Please refresh the page.</div>';
+            };
+            document.head.appendChild(cdnScript);
+        };
         document.head.appendChild(script);
     } else {
-        initChart();
+        initializeChart();
     }
     
-    function initChart() {
+    function initializeChart() {
         const ctx = document.getElementById('paymentStatusChart');
         if (!ctx) return;
         
-        // Debug: Show the actual values from PHP
-        console.log("PHP Values: ", {
+        // Log values for debugging
+        console.log('Chart Data:', {
             diterima: <?= $diterima ?? 0 ?>,
             menunggu_konfirmasi: <?= $menunggu_konfirmasi ?? 0 ?>,
             belum_bayar: <?= $belum_bayar ?? 0 ?>,
             ditolak: <?= $ditolak ?? 0 ?>
         });
         
-        // Get values directly without parsing (avoid type conversion issues)
-        const diterima = <?= $diterima ?? 0 ?>;
-        const menungguKonfirmasi = <?= $menunggu_konfirmasi ?? 0 ?>;
-        const belumBayar = <?= $belum_bayar ?? 0 ?>;
-        const ditolak = <?= $ditolak ?? 0 ?>;
+        const diterima = <?= (int)($diterima ?? 0) ?>;
+        const menungguKonfirmasi = <?= (int)($menunggu_konfirmasi ?? 0) ?>;
+        const belumBayar = <?= (int)($belum_bayar ?? 0) ?>;
+        const ditolak = <?= (int)($ditolak ?? 0) ?>;
         
-        // DEBUG: Force some values for testing
-        // Remove these lines in production
-        // const diterima = 5;
-        // const menungguKonfirmasi = 2;
-        // const belumBayar = 10; 
-        // const ditolak = 1;
-        
-        // Create the chart with simple structure
-        new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: [
-                    'Diterima', 
-                    'Menunggu Konfirmasi', 
-                    'Belum Dibayar', 
-                    'Ditolak'
+        // Create chart data ensuring all statuses are included
+        const chartData = {
+            labels: ['Diterima', 'Menunggu Konfirmasi', 'Belum Dibayar', 'Ditolak'],
+            datasets: [{
+                data: [diterima, menungguKonfirmasi, belumBayar, ditolak],
+                backgroundColor: [
+                    '#31ce36',  // success - green
+                    '#ffad46',  // warning - orange
+                    '#6c757d',  // secondary - gray
+                    '#f25961'   // danger - red
                 ],
-                datasets: [{
-                    data: [
-                        diterima, 
-                        menungguKonfirmasi, 
-                        belumBayar, 
-                        ditolak
-                    ],
-                    backgroundColor: [
-                        '#31ce36',  // green
-                        '#ffad46',  // orange
-                        '#6c757d',  // grey
-                        '#f25961'   // red
-                    ],
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false // We use our custom legend
-                    },
-                    tooltip: {
-                        displayColors: false,
-                        callbacks: {
-                            label: function(context) {
-                                const value = context.raw;
-                                const total = context.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
-                                const percentage = total > 0 ? Math.round((value / total) * 100) : 0;
-                                return `${value} (${percentage}%)`;
+                borderWidth: 0,
+                hoverOffset: 4
+            }]
+        };
+        
+        // Check if all values are 0, show a message
+        const totalItems = diterima + menungguKonfirmasi + belumBayar + ditolak;
+        if (totalItems === 0) {
+            ctx.parentElement.innerHTML = '<div class="alert alert-info text-center my-5">Belum ada data pembayaran</div>';
+            return;
+        }
+        
+        try {
+            // Destroy existing chart if any
+            if (window.paymentChart) {
+                window.paymentChart.destroy();
+            }
+            
+            // Chart options focused on simplicity and reliability
+            window.paymentChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: chartData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false // We use a custom legend
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const value = context.raw;
+                                    const percentage = Math.round((value / totalItems) * 100);
+                                    return `${context.label}: ${value} (${percentage}%)`;
+                                }
                             }
                         }
-                    }
-                },
-                cutout: '65%'
-            }
-        });
+                    },
+                    cutout: '60%'
+                }
+            });
+        } catch (e) {
+            console.error('Chart error:', e);
+            ctx.parentElement.innerHTML = '<div class="alert alert-danger">Error displaying chart</div>';
+        }
     }
 });
 </script>

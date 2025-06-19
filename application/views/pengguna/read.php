@@ -246,9 +246,7 @@
         // Inisialisasi tooltip dengan Bootstrap 5
         $('[data-bs-toggle="tooltip"]').tooltip();
 
-        // Di bagian script view read.php atau template
-        // Hapus event handler .btn-delete yang lama
-        // Ganti dengan ini:
+        // Event handler untuk tombol hapus
         $(document).on('click', '.btn-confirm-delete', function(e) {
             e.preventDefault();
             const url = $(this).data('url');
@@ -269,16 +267,33 @@
                 if (result.isConfirmed) {
                     // Tampilkan loading
                     row.css('opacity', '0.5');
+                    Swal.fire({
+                        title: 'Sedang memproses...',
+                        html: 'Mohon tunggu sebentar',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
 
+                    // Tambahkan header untuk memastikan server tahu ini request AJAX
                     $.ajax({
                         url: url,
                         type: 'POST',
                         dataType: 'json',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
                         success: function(response) {
-                            if (response.status) { // Periksa 'status' bukan 'success'
+                            // Close loading dialog
+                            Swal.close();
+                            
+                            if (response.status === true) {
                                 // Animasi penghapusan baris
                                 row.fadeOut(400, function() {
                                     $(this).remove();
+                                    // Update counters setelah penghapusan
+                                    updateCounters();
                                 });
 
                                 // Tampilkan notifikasi sukses
@@ -293,7 +308,7 @@
                                 // Kembalikan opacity jika gagal
                                 row.css('opacity', '1');
 
-                                // Tampilkan notifikasi error
+                                // Tampilkan notifikasi error dengan detail pesan
                                 Swal.fire({
                                     icon: 'error',
                                     title: 'Error',
@@ -301,12 +316,17 @@
                                 });
                             }
                         },
-                        error: function(xhr) {
+                        error: function(xhr, status, error) {
+                            // Close loading dialog
+                            Swal.close();
+                            
                             row.css('opacity', '1');
+                            console.error("AJAX Error:", xhr.responseText);
+                            
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Error',
-                                text: 'Terjadi kesalahan saat menghubungi server'
+                                text: 'Terjadi kesalahan saat menghubungi server. Silakan coba lagi.'
                             });
                         }
                     });

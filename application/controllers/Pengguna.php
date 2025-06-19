@@ -133,81 +133,91 @@ class Pengguna extends CI_Controller
         if (!$this->input->is_ajax_request()) {
             show_404();
         }
-    
+
         $id = xss_clean($id);
-        $response = ['success' => false, 'message' => ''];
-    
+        $response = ['status' => false, 'message' => ''];
+
         try {
             // Mulai transaksi
             $this->db->trans_begin();
-    
+
             // Dapatkan data pengguna
             $user = $this->M_pengguna->get_by_id($id);
             if (!$user) {
                 throw new Exception('Data pengguna tidak ditemukan');
             }
-    
+
             // Cegah penghapusan diri sendiri
             if ($id == $this->session->userdata('id_user')) {
                 throw new Exception('Anda tidak dapat menghapus akun sendiri');
             }
-    
+
             // Hapus data santri terkait jika role santri
             if ($user->id_role == 2) {
                 $santri = $this->M_santri->get_by_user($id);
                 if ($santri) {
+                    // Load models yang diperlukan
+                    $this->load->model(['M_pembayaran', 'M_pemasukan']);
+
+                    // 1. Cek jika ada pembayaran yang terkait dengan santri
+                    $pembayaran_exists = $this->M_pembayaran->check_pembayaran_by_santri($santri->id_santri);
+                    if ($pembayaran_exists) {
+                        // 2. Hapus data pemasukan yang terkait dengan pembayaran santri
+                        $this->M_pemasukan->delete_by_santri($santri->id_santri);
+
+                        // 3. Hapus data pembayaran santri
+                        $this->M_pembayaran->delete_by_santri($santri->id_santri);
+                    }
+
                     // Hapus foto KTP jika ada
                     if (!empty($santri->foto_ktp)) {
                         $ktp_path = './uploads/ktp/' . $santri->foto_ktp;
                         if (file_exists($ktp_path)) {
-                            if (!unlink($ktp_path)) {
-                                throw new Exception('Gagal menghapus foto KTP');
-                            }
+                            @unlink($ktp_path);
                         }
                     }
-                    
+
                     // Hapus data santri dari database
-                    if (!$this->M_santri->delete_by_user($id)) {
-                        throw new Exception('Gagal menghapus data santri terkait');
-                    }
+                    $this->M_santri->delete_by_user($id);
                 }
             }
-    
+
             // Hapus foto profil jika ada
             if (!empty($user->foto_user)) {
                 $foto_path = './uploads/profil/' . $user->foto_user;
                 if (file_exists($foto_path)) {
-                    if (!unlink($foto_path)) {
-                        throw new Exception('Gagal menghapus foto profil');
-                    }
+                    @unlink($foto_path);
                 }
             }
-    
+
             // Hapus pengguna dari database
             if (!$this->M_pengguna->delete($id)) {
                 throw new Exception('Gagal menghapus data pengguna');
             }
-    
+
             // Verifikasi semua operasi berhasil sebelum commit
             if ($this->db->trans_status() === FALSE) {
                 throw new Exception('Gagal dalam proses transaksi');
             }
-    
+
             // Commit transaksi
             $this->db->trans_commit();
-    
+
             $response = [
-                'status' => true,  // Ubah dari 'success' ke 'status' untuk konsistensi
+                'status' => true,
                 'message' => 'Data pengguna berhasil dihapus'
             ];
         } catch (Exception $e) {
             $this->db->trans_rollback();
-            $response['message'] = $e->getMessage();
-            
+            $response = [
+                'status' => false,
+                'message' => $e->getMessage()
+            ];
+
             // Log error untuk debugging
             log_message('error', 'Gagal menghapus pengguna: ' . $e->getMessage());
         }
-    
+
         // Kirim response JSON
         $this->output
             ->set_content_type('application/json')

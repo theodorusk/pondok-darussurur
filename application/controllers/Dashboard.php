@@ -112,28 +112,41 @@ class Dashboard extends CI_Controller {
         $id_santri = $santri->id_santri;
         
         // Load required models
-        $this->load->model(['M_dashboard', 'M_pembayaran', 'M_tagihan']);
+        $this->load->model(['M_dashboard', 'M_pembayaran']);
         
-        // Get payment summary
+        // Get payment summary from dashboard model
         $summary = $this->M_dashboard->get_santri_payment_summary($id_santri);
         
-        // Prepare data to pass to the view
+        // Prepare data for view
         $data = [
             'title' => 'Dashboard Santri',
             'nama_user' => $this->session->userdata('nama_user'),
-            'total_tagihan' => $summary->total_tagihan ?? 0,
-            'diterima' => $summary->diterima ?? 0,
-            'menunggu_konfirmasi' => $summary->menunggu_konfirmasi ?? 0,
-            'belum_bayar' => $summary->belum_bayar ?? 0,
-            'ditolak' => $summary->ditolak ?? 0,
-            'tagihan_akan_datang' => $summary->tagihan_akan_datang ?? [],
-            'riwayat_pembayaran' => $this->M_pembayaran->get_all_riwayat_by_santri($id_santri)
+            'total_tagihan' => $summary->total_tagihan,
+            'diterima' => $summary->diterima,
+            'menunggu_konfirmasi' => $summary->menunggu_konfirmasi,
+            'belum_bayar' => $summary->belum_bayar,
+            'ditolak' => $summary->ditolak,
+            'tagihan_akan_datang' => $summary->tagihan_akan_datang,
+            'riwayat_pembayaran' => []
         ];
         
-        // If we need to limit the payment history, we can do it here
-        if (count($data['riwayat_pembayaran']) > 5) {
-            $data['riwayat_pembayaran'] = array_slice($data['riwayat_pembayaran'], 0, 5);
-        }
+        // Get payment history
+        $riwayat = $this->M_pembayaran->get_all_riwayat_by_santri($id_santri);
+        
+        // Filter out unpaid payments from history
+        $filtered_riwayat = array_filter($riwayat, function($item) {
+            return $item->status != 'belum_bayar';
+        });
+        
+        // Sort by payment date (newest first)
+        usort($filtered_riwayat, function($a, $b) {
+            $date_a = strtotime($a->tanggal_bayar ?? $a->created_at);
+            $date_b = strtotime($b->tanggal_bayar ?? $b->created_at);
+            return $date_b - $date_a;
+        });
+        
+        // Limit to 5 items
+        $data['riwayat_pembayaran'] = array_slice($filtered_riwayat, 0, 5);
         
         template('dashboard/santri', $data);
     }

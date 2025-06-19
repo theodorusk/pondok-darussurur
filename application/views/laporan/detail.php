@@ -1,4 +1,3 @@
-
 <div class="container">
     <div class="page-inner">
         <div class="page-header">
@@ -64,10 +63,7 @@
                                         <th>Total Pengeluaran</th>
                                         <td>: Rp <?= number_format($laporan->total_pengeluaran, 0, ',', '.') ?></td>
                                     </tr>
-                                    <tr>
-                                        <th>Saldo Awal</th>
-                                        <td>: Rp <?= number_format($laporan->saldo_awal, 0, ',', '.') ?></td>
-                                    </tr>
+                                    <!-- Baris saldo awal dihapus -->
                                     <tr>
                                         <th>Saldo Akhir</th>
                                         <td>: Rp <?= number_format($laporan->saldo_akhir, 0, ',', '.') ?></td>
@@ -85,7 +81,7 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table id="pemasukan-table" class="display table table-striped table-hover">
+                            <table class="display table table-striped table-hover" id="table-pemasukan">
                                 <thead>
                                     <tr>
                                         <th>Tanggal</th>
@@ -120,7 +116,7 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table id="pengeluaran-table" class="display table table-striped table-hover">
+                            <table class="display table table-striped table-hover" id="table-pengeluaran">
                                 <thead>
                                     <tr>
                                         <th>Tanggal</th>
@@ -152,11 +148,25 @@
 
 <script>
 $(document).ready(function() {
-    $('#pemasukan-table, #pengeluaran-table').DataTable({
-        responsive: true,
-        language: {
-            url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/id.json"
-        }
-    });
+    // Periksa apakah tabel sudah diinisialisasi sebelumnya
+    if (!$.fn.dataTable.isDataTable('#table-pemasukan')) {
+        $('#table-pemasukan').DataTable({
+            responsive: true,
+            language: {
+                url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/id.json"
+            },
+            order: [[0, 'desc']]
+        });
+    }
+    
+    if (!$.fn.dataTable.isDataTable('#table-pengeluaran')) {
+        $('#table-pengeluaran').DataTable({
+            responsive: true,
+            language: {
+                url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/id.json"
+            },
+            order: [[0, 'desc']]
+        });
+    }
 });
 </script>

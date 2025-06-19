@@ -64,7 +64,6 @@
                                         <th>Periode</th>
                                         <th>Total Pemasukan</th>
                                         <th>Total Pengeluaran</th>
-                                        <th>Saldo Awal</th>
                                         <th>Saldo Akhir</th>
                                         <th>Keterangan</th>
                                         <th>Aksi</th>
@@ -80,7 +79,6 @@
                                         </td>
                                         <td>Rp <?= number_format($row->total_pemasukan, 0, ',', '.') ?></td>
                                         <td>Rp <?= number_format($row->total_pengeluaran, 0, ',', '.') ?></td>
-                                        <td>Rp <?= number_format($row->saldo_awal, 0, ',', '.') ?></td>
                                         <td>Rp <?= number_format($row->saldo_akhir, 0, ',', '.') ?></td>
                                         <td><?= htmlspecialchars($row->keterangan) ?></td>
                                         <td>

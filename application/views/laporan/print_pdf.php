@@ -95,10 +95,7 @@
             <td class="label">Total Pengeluaran</td>
             <td>: Rp <?= number_format($laporan->total_pengeluaran, 0, ',', '.') ?></td>
         </tr>
-        <tr>
-            <td class="label">Saldo Awal</td>
-            <td>: Rp <?= number_format($laporan->saldo_awal, 0, ',', '.') ?></td>
-        </tr>
+        <!-- Baris saldo awal telah dihapus -->
         <tr>
             <td class="label">Saldo Akhir</td>
             <td>: Rp <?= number_format($laporan->saldo_akhir, 0, ',', '.') ?></td>

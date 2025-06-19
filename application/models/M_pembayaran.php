@@ -157,4 +157,23 @@ class M_pembayaran extends CI_Model
         $this->db->order_by('ps.tanggal_bayar', 'desc');
         return $this->db->get()->result();
     }
+
+    public function check_pembayaran_by_santri($id_santri)
+    {
+        $this->db->where('id_santri', $id_santri);
+        $query = $this->db->get('pembayaran_santri');
+        return $query->num_rows() > 0;
+    }
+
+    public function delete_by_santri($id_santri)
+    {
+        try {
+            // Hapus semua pembayaran yang terkait dengan santri
+            $this->db->where('id_santri', $id_santri);
+            return $this->db->delete('pembayaran_santri');
+        } catch (Exception $e) {
+            log_message('error', 'Error in M_pembayaran::delete_by_santri: ' . $e->getMessage());
+            return false;
+        }
+    }
 }
