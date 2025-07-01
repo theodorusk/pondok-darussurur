@@ -1,4 +1,3 @@
-
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
@@ -7,6 +6,8 @@ class Kategori extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        // Cek apakah user sudah login
+        $this->load->helper('islogin_helper');
         is_logged_in();
 
         // Hanya admin yang boleh mengakses controller ini

@@ -203,7 +203,7 @@
                         </div>
                     </div>
                     <div class="card-footer text-center py-3">
-                        <a href="<?= base_url('pembayaran/riwayat') ?>" class="btn btn-sm btn-primary btn-round px-3">
+                        <a href="<?= base_url('pembayaran') ?>" class="btn btn-sm btn-primary btn-round px-3">
                             <i class="fas fa-history me-1"></i> Lihat Semua Riwayat
                         </a>
                     </div>
