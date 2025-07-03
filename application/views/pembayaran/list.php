@@ -16,6 +16,7 @@
                 </li>
             </ul>
         </div>
+        
 
         <div class="row">
             <div class="col-md-12">
@@ -23,6 +24,11 @@
                     <div class="card-header">
                         <div class="d-flex justify-content-between align-items-center">
                             <h4 class="card-title">Daftar Tagihan & Riwayat Pembayaran</h4>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#alurPembayaranModal">
+                                    <i class="fas fa-info-circle"></i> Alur Pembayaran
+                                </button>
+                            </div>
                         </div>
                     </div>
                     <div class="card-body">
@@ -148,6 +154,109 @@
     </div>
 </div>
 
+<!-- Modal Alur Pembayaran -->
+<div class="modal fade" id="alurPembayaranModal" tabindex="-1" aria-labelledby="alurPembayaranModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-title" id="alurPembayaranModalLabel">
+                    <i class="fas fa-info-circle"></i> Alur Pembayaran
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12">
+                        <h6 class="mb-3 text-info">Langkah-langkah Pembayaran:</h6>
+                        
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-marker bg-primary">
+                                    <span class="text-white font-weight-bold">1</span>
+                                </div>
+                                <div class="timeline-content">
+                                    <h6 class="timeline-title">Cek Tagihan</h6>
+                                    <p class="timeline-text">
+                                        Periksa daftar tagihan yang belum dibayar pada tabel di atas. 
+                                        Perhatikan tanggal jatuh tempo untuk menghindari keterlambatan.
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div class="timeline-item">
+                                <div class="timeline-marker bg-warning">
+                                    <span class="text-white font-weight-bold">2</span>
+                                </div>
+                                <div class="timeline-content">
+                                    <h6 class="timeline-title">Klik Detail/Bayar</h6>
+                                    <p class="timeline-text">
+                                        Klik tombol <i class="fa fa-eye text-info"></i> untuk melihat detail tagihan atau 
+                                        <i class="fa fa-upload text-primary"></i> untuk melakukan pembayaran.
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div class="timeline-item">
+                                <div class="timeline-marker bg-success">
+                                    <span class="text-white font-weight-bold">3</span>
+                                </div>
+                                <div class="timeline-content">
+                                    <h6 class="timeline-title">Upload Bukti Pembayaran</h6>
+                                    <p class="timeline-text">
+                                        Lakukan transfer sesuai nominal yang tertera, kemudian upload bukti pembayaran 
+                                        dalam format JPG, PNG, atau PDF (maksimal 2MB).
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div class="timeline-item">
+                                <div class="timeline-marker bg-info">
+                                    <span class="text-white font-weight-bold">4</span>
+                                </div>
+                                <div class="timeline-content">
+                                    <h6 class="timeline-title">Menunggu Konfirmasi</h6>
+                                    <p class="timeline-text">
+                                        Status akan berubah menjadi <span class="badge badge-warning">Menunggu Konfirmasi</span>. 
+                                        Admin akan memverifikasi pembayaran Anda dalam 1x24 jam.
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div class="timeline-item">
+                                <div class="timeline-marker bg-success">
+                                    <span class="text-white font-weight-bold">5</span>
+                                </div>
+                                <div class="timeline-content">
+                                    <h6 class="timeline-title">Pembayaran Selesai</h6>
+                                    <p class="timeline-text">
+                                        Jika pembayaran valid, status akan berubah menjadi <span class="badge badge-success">Diterima</span>. 
+                                        Jika ada masalah, status akan menjadi <span class="badge badge-secondary">Ditolak</span> 
+                                        dan Anda perlu upload ulang bukti pembayaran.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="alert alert-info mt-4">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <strong>Penting:</strong>
+                            <ul class="mb-0 mt-2">
+                                <li>Pastikan nominal transfer sesuai dengan tagihan yang tertera</li>
+                                <li>Simpan bukti pembayaran dalam format yang jelas dan mudah dibaca</li>
+                                <li>Hubungi admin jika ada kendala dalam proses pembayaran</li>
+                                <li>Perhatikan tanggal jatuh tempo untuk menghindari denda keterlambatan</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     $(document).ready(function() {
         // Hapus konfigurasi DataTables yang lama
@@ -196,5 +305,145 @@
         display: flex;
         justify-content: flex-end;
         align-items: center;
+    }
+
+    /* Timeline Styling */
+    .timeline {
+        position: relative;
+        padding-left: 0;
+        margin-left: 20px;
+    }
+
+    .timeline-item {
+        display: flex;
+        margin-bottom: 30px;
+        position: relative;
+        align-items: flex-start;
+    }
+
+    .timeline-item:not(:last-child)::before {
+        content: '';
+        position: absolute;
+        left: 19px;
+        top: 45px;
+        height: calc(100% + 5px);
+        width: 2px;
+        background: linear-gradient(to bottom, #dee2e6, #f8f9fa);
+        z-index: 1;
+    }
+
+    .timeline-marker {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 20px;
+        position: relative;
+        z-index: 2;
+        font-size: 14px;
+        font-weight: bold;
+        flex-shrink: 0;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        border: 3px solid #fff;
+    }
+
+    .timeline-content {
+        flex: 1;
+        padding-top: 2px;
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        border-left: 4px solid #e9ecef;
+        margin-top: 5px;
+    }
+
+    .timeline-title {
+        font-weight: 600;
+        color: #495057;
+        margin-bottom: 8px;
+        font-size: 16px;
+    }
+
+    .timeline-text {
+        color: #6c757d;
+        margin: 0;
+        line-height: 1.6;
+        font-size: 14px;
+    }
+
+    /* Modal enhancements */
+    .modal-header.bg-info {
+        border-bottom: none;
+        border-radius: 0.375rem 0.375rem 0 0;
+    }
+
+    .modal-body {
+        padding: 2rem;
+    }
+
+    .btn-close-white {
+        filter: invert(1) grayscale(100%) brightness(200%);
+    }
+
+    /* Alert dalam modal */
+    .alert-info {
+        border-left: 4px solid #17a2b8;
+        background-color: rgba(23, 162, 184, 0.08);
+        border-radius: 8px;
+        border: none;
+    }
+
+    /* Styling untuk content dalam timeline */
+    .timeline-content .badge {
+        display: inline-block;
+        margin: 0 2px;
+    }
+
+    .timeline-content i {
+        margin: 0 2px;
+    }
+
+    /* Responsive timeline untuk mobile */
+    @media (max-width: 768px) {
+        .timeline {
+            margin-left: 10px;
+        }
+        
+        .timeline-marker {
+            width: 35px;
+            height: 35px;
+            font-size: 12px;
+            margin-right: 15px;
+        }
+        
+        .timeline-content {
+            padding: 12px;
+        }
+        
+        .timeline-item:not(:last-child)::before {
+            left: 17px;
+        }
+    }
+
+    /* Badge styling improvements */
+    .badge {
+        font-size: 11px;
+        padding: 4px 8px;
+    }
+
+    /* Button alur pembayaran */
+    .card-tools .btn {
+        border-radius: 20px;
+        padding: 6px 15px;
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+    .card-tools .btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        transition: all 0.3s ease;
     }
 </style>

@@ -13,10 +13,10 @@
                 <button class="btn btn-toggle sidenav-toggler">
                     <i class="gg-menu-left"></i>
                 </button>
-            </div>
-            <button class="topbar-toggler more">
+            </div>            <button class="topbar-toggler more">
                 <i class="gg-more-vertical-alt"></i>
-            </button>        </div>
+            </button>
+        </div>
         <!-- End Logo Header -->
     </div>
     
@@ -24,9 +24,17 @@
         <div class="sidebar-content">
             <!-- User Info Section -->
             <div class="user">
-                <div class="avatar-sm float-start me-2">
-                    <img src="<?php echo base_url('uploads/profil/') . ($this->session->userdata('foto') ? $this->session->userdata('foto') : 'default.jpg'); ?>" alt="User Avatar" class="avatar-img rounded-circle">
-                </div>
+                <?php if ($this->session->userdata('foto')): ?>
+                    <div class="avatar-sm float-start me-2">
+                        <img src="<?= base_url('uploads/profil/' . $this->session->userdata('foto')) ?>" 
+                            class="avatar-img rounded-circle img-thumbnail" style="width: 60px; height: 60px; object-fit: cover;" alt="User Avatar">
+                    </div>
+                <?php else: ?>
+                    <div class="avatar-sm float-start me-2 d-flex align-items-center justify-content-center" 
+                        style="width: 50px; height: 50px; background-color: #f0f0f0; border-radius: 50%;">
+                        <i class="fas fa-user fa-2x text-muted"></i>
+                    </div>
+                <?php endif; ?>
                 <div class="info">
                     <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="true" aria-controls="collapseExample">
                         <span>
@@ -61,9 +69,10 @@
                                 </a>
                             </li>
                         </ul>
-                    </div>
-                </div>
-            </div>            <!-- Navigation Menu -->
+                    </div>                </div>
+            </div>
+
+            <!-- Navigation Menu -->
             <ul class="nav nav-info">
                 <?php if ($this->session->userdata('id_role') == 1): // Admin ?>
                     <!-- Dashboard -->
@@ -184,6 +193,80 @@
 <!-- End Sidebar -->
 
 <!-- Logout Confirmation Script -->
+<style>
+    /* Ensure consistent styling for sidebar navigation */
+    .sidebar .nav > li > a {
+        padding: 15px 20px;
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: #575962;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.42857;
+        transition: all 0.3s ease;
+    }
+
+    .sidebar .nav > li > a > i {
+        font-size: 16px;
+        margin-right: 10px;
+        min-width: 20px;
+        text-align: center;
+    }
+
+    .sidebar .nav > li > a > p {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 400;
+        flex: 1;
+    }
+
+    .sidebar .nav > li.active > a {
+        background-color: #1572e8;
+        color: #fff;
+        border-radius: 5px;
+        margin: 0 8px;
+    }
+
+    .sidebar .nav > li:hover > a {
+        background-color: rgba(21, 114, 232, 0.1);
+        color: #1572e8;
+        border-radius: 5px;
+        margin: 0 8px;
+    }
+
+    /* Fix for submenu items */
+    .sidebar .nav .nav-collapse > li > a {
+        padding: 12px 20px 12px 50px;
+        font-size: 13px;
+    }
+
+    .sidebar .nav .nav-collapse > li.active > a {
+        background-color: rgba(21, 114, 232, 0.1);
+        color: #1572e8;
+        font-weight: 500;
+    }
+
+    /* User section styling */
+    .sidebar .user {
+        padding: 20px;
+        border-bottom: 1px solid #ebedf2;
+        margin-bottom: 10px;
+    }
+
+    .sidebar .user .info a {
+        color: #575962;
+        font-weight: 500;
+    }
+
+    .sidebar .user .user-level {
+        font-size: 12px;
+        color: #8d9498;
+        font-weight: 400;
+        display: block;
+        margin-top: 2px;
+    }
+</style>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Handle all logout buttons
@@ -249,6 +332,22 @@
                             parentNavItem.classList.remove('submenu');
                         }
                     }
+                }
+            });
+        });
+
+        // Add click highlighting for better UX
+        const allNavItems = document.querySelectorAll('.nav-item a');
+        allNavItems.forEach(function(item) {
+            item.addEventListener('click', function() {
+                // Remove active class from all items
+                document.querySelectorAll('.nav-item').forEach(function(navItem) {
+                    navItem.classList.remove('active');
+                });
+                
+                // Add active class to clicked item's parent
+                if (!this.hasAttribute('data-bs-toggle') && !this.classList.contains('btn-logout')) {
+                    this.closest('.nav-item').classList.add('active');
                 }
             });
         });
